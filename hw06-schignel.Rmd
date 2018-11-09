@@ -1,0 +1,215 @@
+---
+title: "Homework 06: Data wrangling wrap up"
+author: "Stephen Chignell"
+date: "November 8, 2018"
+output:
+  github_document:
+    toc: yes
+always_allow_html: yes
+---
+
+## Overview
+
+**Goals:**
+
+Complete two of six possible tasks on data wrangling.
+
+
+
+## Part 1: Character data
+
+Load package for characters
+```{r}
+library(stringr)
+```
+
+###14.2.5 Exercises
+
+1. In code that doesn’t use stringr, you’ll often see paste() and paste0(). What’s the difference between the two functions? What stringr function are they equivalent to? How do the functions differ in their handling of NA?
+
+- `paste()` converts vectors to characters and concatenates them based on a rule. 
+- `paste0()` does the same, but simply assumes that sep = ""
+
+```{r}
+# use sep for individual character strings
+paste("a", "b", sep = "")
+
+# use collapse for one string
+x <- c("a", "b")
+paste(x, collapse = "")
+
+# use paste0() to assume "" as separator
+paste0("a", "b")
+
+# this is equivalent to `str_c`
+str_c("a", "b")
+```
+
+- With `str_c`, when a missing value is combined with another string the result will be missing (NA). You can then use str_replace_na() to convert NA to "NA"
+
+- `paste()`, on the otherhand, coerces the missing value (NA) to "NA" automatically. 
+
+
+2. In your own words, describe the difference between the sep and collapse arguments to str_c().
+
+- "sep"" is used to control how individual character strings are to be separated, while "collapse" is used to change a vector of strings into a single string.
+
+
+3. Use str_length() and str_sub() to extract the middle character from a string. What will you do if the string has an even number of characters?
+
+```{r}
+odd <- "Steve"
+str_length(odd)
+
+# Middle character of 5 is 3
+str_sub(odd, 3,3)
+
+even <- "Steve!"
+str_length(even)
+
+# Middle two characters of 6 is 3 and 4
+str_sub(odd, 3,4)
+
+```
+
+
+4. What does str_wrap() do? When might you want to use it?
+
+`str_wrap()` is a wrapper around stringi::stri_wrap() which implements the Knuth-Plass paragraph wrapping algorithm. It reformats a character vector of strings based on a specificie dwidth and indentation and/or exdentation. 
+
+This would be useful for customizing the display of large blocks of texts, to ensure they are printed as nice, legible paragraphs. 
+
+
+5. What does str_trim() do? What’s the opposite of str_trim()?
+
+str_trim() removes whitespace from start and end of string. The "side" argument specifics the side on which to remove whitespace (left, right, or both).
+
+str_pad() does the opposite, adding whitespace based on specified width and side.
+
+
+
+6. Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
+
+```{r}
+a <- c("a", "b", "c")
+a
+
+vec2str <- function(x) str_c(x)
+
+vec2str(c("a", "b", "c"))
+
+```
+
+
+
+
+
+
+
+###14.3.1.1 Exercises
+
+1. Explain why each of these strings don’t match a `\`: 
+
+- `"\"` This has a special behavior assigned to it already (i.e. escape)
+
+- `"\\"` This escapes the escape behavior to create regular expression
+
+- `"\\\"` This is a regular expression that requires a string, which must also be escaped in order to match a literal `\`.
+
+2. How would you match the sequence `"'\?`
+
+```{r}
+# GRRRRRR
+
+z <- "\"\'\\?"
+
+str_view("?", "\\?")
+```
+
+3. What patterns will the regular expression \..\..\.. match? How would you represent it as a string?
+
+It will match a regular expression .wildcard.wildcard.wildcard
+```{r}
+
+# GRRRRR
+
+string <- "\\..\\..\\.."
+
+str_view(".h.h.hurry!", "\\..\\..\\..")
+```
+
+
+
+
+### 14.3.2.1 Exercises
+
+How would you match the literal string "$^$"?
+
+```{r}
+str_view("F$^$@!", pattern = "\\$\\^\\$", match = TRUE)
+
+```
+
+
+Given the corpus of common words in stringr::words, create regular expressions that find all words that:
+
+```{r}
+#Start with “y”.
+str_view(words, pattern = "^y", match = TRUE)
+
+#End with “x”
+str_view(words, pattern = "$x", match = TRUE)
+
+#Are exactly three letters long. (Don’t cheat by using `str_length()`!)
+str_view(words, pattern = "^...$", match = TRUE)
+
+#Have seven letters or more.
+str_view(words, pattern = "^.......", match = TRUE)
+```
+
+
+14.3.3.1 Exercises
+
+Create regular expressions to find all words that:
+
+```{r}
+# Start with a vowel.
+str_view(words, pattern = "^[aeiou]", match = TRUE)
+
+# That only contain consonants. (Hint: thinking about matching “not”-vowels.)
+str_view(words, pattern = "^[^aeiou]*$", match = TRUE)
+
+# End with ed, but not with eed.
+str_view(words, pattern = "[^e]ed$", match = TRUE)
+
+# End with ing or ise.
+str_view(words, pattern = "(ing|ise)$", match = TRUE)
+```
+
+
+Empirically verify the rule “i before e except after c”.
+```{r}
+# NOT SURE
+str_view(words, pattern = "cie", match = TRUE)
+
+str_view(words, pattern = "(c).*(i).*(e)*", match = TRUE)
+```
+
+
+Is “q” always followed by a “u”?
+
+Write a regular expression that matches a word if it’s probably written in British English, not American English. Note: rules based on the [Oxford dictionaries British and American English spelling](https://en.oxforddictionaries.com/spelling/british-and-spelling)
+
+```{r}
+str_view(words, pattern = "[^aeiou]re$|[^aeiou]our$|[^aeiou]ise$|[^aeiou]yse$|[aeiou]ll[aeiou]$|[aeiou]ence$|[aeiou]ogue$|ae|oe", match = TRUE)
+```
+
+
+Create a regular expression that will match telephone numbers as commonly written in your country.
+
+```{r}
+str_view("555-541-2679", pattern = "...-...-....", match = TRUE)
+```
+
+
+
