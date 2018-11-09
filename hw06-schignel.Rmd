@@ -168,7 +168,7 @@ str_view(words, pattern = "^.......", match = TRUE)
 ```
 
 
-14.3.3.1 Exercises
+###14.3.3.1 Exercises
 
 Create regular expressions to find all words that:
 
@@ -212,4 +212,115 @@ str_view("555-541-2679", pattern = "...-...-....", match = TRUE)
 ```
 
 
+###14.3.4.1 Exercises
+
+Describe the equivalents of ?, +, * in {m,n} form.
+
+```{r}
+# ?: 0 or 1
+w <- "1888 is the longest year in Roman numerals: MDCCCLXXXVIII"
+str_view(w, "C{1,2}?")
+
+# +: 1 or more
+str_view(w, "C{1,}")
+
+# *: 0 or more
+str_view(w, "C{0,}")
+```
+
+
+Describe in words what these regular expressions match: (read carefully to see if I’m using a regular expression or a string that defines a regular expression.)
+
+1. ^.*$
+2. "\\{.+\\}"
+3. \d{4}-\d{2}-\d{2}
+4. "\\\\{4}"
+
+Create regular expressions to find all words that:
+
+- Start with three consonants.
+- Have three or more vowels in a row.
+- Have two or more vowel-consonant pairs in a row.
+
+
+Solve the beginner regexp crosswords at https://regexcrossword.com/challenges/beginner.
+
+
+
+14.4.2 Exercises
+
+For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple str_detect() calls.
+
+Find all words that start or end with x.
+
+```{r}
+# regex
+str_view_all(words, "^x|x$", match = TRUE)
+# multiple str_detect
+str_detect(words, "^x")
+str_detect(words, "x$")
+```
+
+Find all words that start with a vowel and end with a consonant.
+```{r}
+str_detect(words, "^[aeiou][^aeiou]$")
+```
+
+Are there any words that contain at least one of each different vowel?
+```{r}
+#GRRRR
+sum(str_detect(words, "a")) +
+sum(str_detect(words, "e")) +
+sum(str_detect(words, "i")) +
+sum(str_detect(words, "o")) +
+sum(str_detect(words, "u"))
+
+```
+
+
+- What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)
+
+```{r}
+library(dplyr)
+df <- tibble(
+  word = words, 
+  i = seq_along(word)
+)
+
+df %>% 
+  mutate(
+    vowels = str_count(word, "[aeiou]")
+        ) %>% 
+  arrange(desc(vowels)) %>% 
+  mutate()
+```
+
+
+14.4.3.1 Exercises
+
+In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
+
+```{r}
+# add a space before "red"
+colours <- c(" red", "orange", "yellow", "green", "blue", "purple")
+colour_match <- str_c(colours, collapse = "|")
+colour_match
+
+#check problem is fixed (i.e. "flickered is not matched")
+more <- sentences[str_count(sentences, colour_match) > 1]
+str_view_all(more, colour_match)
+```
+
+From the Harvard sentences data, extract:
+
+- The first word from each sentence.
+
+```{r}
+head(sentences)
+head(word(sentences, 1))
+```
+
+- All words ending in ing.
+
+- All plurals.
 
