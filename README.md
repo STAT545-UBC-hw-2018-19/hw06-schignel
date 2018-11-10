@@ -11,4 +11,4 @@ You can access these by navigating the directory above, or use the following sho
 - [html preview (.html)](https://htmlpreview.github.io/?https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/hw06-schignel.html) (recommended)
 - [Markdown (.md)](https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/hw06-schignel.md)
 - [R Markdown (.Rmd)](https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/hw06-schignel.Rmd)
-
+- [Trump Tweets data (.rda)](https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/trump_tweets_df.rda) (for Task 2)
