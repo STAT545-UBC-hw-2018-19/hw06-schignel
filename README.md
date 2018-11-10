@@ -12,10 +12,3 @@ You can access these by navigating the directory above, or use the following sho
 - [Markdown (.md)](https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/hw06-schignel.md)
 - [R Markdown (.Rmd)](https://github.com/STAT545-UBC-students/hw06-schignel/blob/master/hw06-schignel.Rmd)
 
-
-
-Some expert wrangling for inspiration:
-![](https://media.giphy.com/media/aCHBqhR9rA7Ic/giphy.gif)
-
-
-
