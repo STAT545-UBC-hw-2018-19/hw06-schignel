@@ -20,8 +20,9 @@ The following exercises explore a number of tools for wrangling strings.
 
 First, we load `stringr` package for working with character strings
 ```{r}
-library(stringr)
-library(stringi)
+suppressMessages(library(stringr))
+suppressMessages(library(stringi))
+suppressMessages(library(dplyr))
 ```
 
 
@@ -395,7 +396,6 @@ sum(str_detect(words, "u"))
 **[2]** What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)
 
 ```{r}
-library(dplyr)
 df <- tibble(
   word = words, 
   i = seq_along(word)
