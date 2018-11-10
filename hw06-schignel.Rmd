@@ -577,7 +577,7 @@ Generate random text.
 
 ## Task 2: Work with a list
 
-The following exercise explores lists using twitter data from Donald Trump. We will be working through the related [purrr tutorial](https://jennybc.github.io/purrr-tutorial/ls08_trump-tweets.html) provided by Jenny Bryan.
+The following exercise explores lists using twitter data from Donald Trump. We will be working through Jenny Bryan's [purrr tutorial](https://jennybc.github.io/purrr-tutorial/ls08_trump-tweets.html).
 
 Load the required libraries and download some tweets from the official Donald Trump account.
 ```{r}
@@ -622,21 +622,21 @@ Use the base function gregexpr() to locate all the Trump Android words inside th
 matches <- gregexpr(regex, tweets)
 str(matches)
 ```
-What is matches?!?
+What is `matches`?!?
 
 - A list. One element per element of `tweets`.
 - Each element is an integer vector.
-    + It’s -1 if no matches found.
+    + It’s `-1` if no matches found.
     + Holds the position(s) of the first character of each match, otherwise.
-- Each element has two attributes. Consider match.length. Let us not speak of the other one.
+- Each element has two attributes. Consider `match.length`. Let us not speak of the other one.
     + It’s -1 if no matches found.
     + Holds the length(s) of each match, otherwise.
 
 We can clearly extract the matched words with this information. But it’s going to hurt.
 
-### Preview of substring() target function
+### Preview of `substring()` target function
 
-Our eventual target function is substring(). Read the help on it now! Here are the highlights:
+Our eventual target function is `substring()`. Read the help on it now! Here are the highlights:
 
 
 USAGE:
@@ -648,18 +648,18 @@ first = integer, position where substring to extract starts
 last = integer, position where substring to extract stops
 
 
-Imagine each tweet playing the role of text.
-The elements of matches are awfully close to what we need for first.
-But we don’t have anything to use for last yet.
+Imagine each tweet playing the role of `text`.
+The elements of `matches` are awfully close to what we need for `first`.
+But we don’t have anything to use for `last` yet.
 This is going to be Job #1.
-Job #2 is to insert substring() and tweets + matches + result of Job #1 into the purrr::map() machinery.
+Job #2 is to insert `substring()` and `tweets` + `matches` + result of Job #1 into the `purrr::map()` machinery.
 
 Here’s where we are heading:
 
 ![](https://jennybc.github.io/purrr-tutorial/purrr-slides-trump-tweets.png)
 ### Get to know your Awkward List
 
-How long are the elements of matches?
+How long are the elements of `matches`?
 ```{r}
 lengths(matches)                      # just happens to exist for length
 sapply(matches, length)               # NSFP = not safe for programming
